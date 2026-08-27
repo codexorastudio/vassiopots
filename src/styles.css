@@ -1,0 +1,291 @@
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@500,700,800,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap');
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@font-face {
+  font-family: 'JHC Rasbora ExtraBold';
+  src: local('JHC Rasbora ExtraBold'), local('JHC-Rasbora-ExtraBold'), local('JHC Rasbora'), local('JHC-Rasbora');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JHC Rasbora';
+  src: local('JHC Rasbora ExtraBold'), local('JHC-Rasbora-ExtraBold'), local('JHC Rasbora'), local('JHC-Rasbora');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system definition.
+ *
+ * The @theme inline block maps CSS custom properties to Tailwind utility
+ * classes (e.g. --color-primary -> bg-primary, text-primary).
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-dark-green: var(--dark-green);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-heading: var(--font-heading);
+}
+
+:root {
+  --radius: 0rem;
+  --background: #FCFCF8;
+  --foreground: #2F4B2F;
+  --card: #FCFCF8;
+  --card-foreground: #2F4B2F;
+  --popover: #FCFCF8;
+  --popover-foreground: #2F4B2F;
+  --primary: #7FA93A;
+  --primary-foreground: #FCFCF8;
+  --primary-hover: #6E9432;
+  --dark-green: #3F673F;
+  --secondary: #3F673F;
+  --secondary-foreground: #FCFCF8;
+  --muted: #EEF5E3;
+  --muted-foreground: #66725E;
+  --accent: #EEF5E3;
+  --accent-foreground: #2F4B2F;
+  --destructive: oklch(0.45 0.15 25);
+  --destructive-foreground: #FCFCF8;
+  --border: #D9E3C5;
+  --input: #D9E3C5;
+  --ring: #7FA93A;
+  --announce: #3F673F;
+  --announce-foreground: #FCFCF8;
+  --chart-1: #7FA93A;
+  --chart-2: #6E9432;
+  --chart-3: #3F673F;
+  --chart-4: #66725E;
+  --chart-5: #2F4B2F;
+  --sidebar: #EEF5E3;
+  --sidebar-foreground: #2F4B2F;
+  --sidebar-primary: #7FA93A;
+  --sidebar-primary-foreground: #FCFCF8;
+  --sidebar-accent: #EEF5E3;
+  --sidebar-accent-foreground: #2F4B2F;
+  --sidebar-border: #D9E3C5;
+  --sidebar-ring: #7FA93A;
+  --font-heading: "JHC Rasbora ExtraBold", "JHC Rasbora", "Satoshi", system-ui, -apple-system, sans-serif;
+  --font-serif: "JHC Rasbora ExtraBold", "JHC Rasbora", "Satoshi", system-ui, -apple-system, sans-serif;
+  --font-sans: "Manrope", system-ui, -apple-system, sans-serif;
+  --font-script: "JHC Rasbora ExtraBold", "JHC Rasbora", "Satoshi", system-ui, -apple-system, sans-serif;
+}
+
+@theme inline {
+  --color-announce: var(--announce);
+  --color-announce-foreground: var(--announce-foreground);
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+  --font-script: var(--font-script);
+}
+
+.dark {
+  --background: #2F4B2F;
+  --foreground: #FCFCF8;
+  --card: #2F4B2F;
+  --card-foreground: #FCFCF8;
+  --popover: #2F4B2F;
+  --popover-foreground: #FCFCF8;
+  --primary: #7FA93A;
+  --primary-foreground: #FCFCF8;
+  --primary-hover: #6E9432;
+  --dark-green: #3F673F;
+  --secondary: #6E9432;
+  --secondary-foreground: #FCFCF8;
+  --muted: #2F4B2F;
+  --muted-foreground: #D9E3C5;
+  --accent: #2F4B2F;
+  --accent-foreground: #FCFCF8;
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: #FCFCF8;
+  --border: #3F673F;
+  --input: #3F673F;
+  --ring: #7FA93A;
+  --chart-1: #7FA93A;
+  --chart-2: #6E9432;
+  --chart-3: #EEF5E3;
+  --chart-4: #3F673F;
+  --chart-5: #FCFCF8;
+  --sidebar: #2F4B2F;
+  --sidebar-foreground: #FCFCF8;
+  --sidebar-primary: #7FA93A;
+  --sidebar-primary-foreground: #FCFCF8;
+  --sidebar-accent: #2F4B2F;
+  --sidebar-accent-foreground: #FCFCF8;
+  --sidebar-border: #3F673F;
+  --sidebar-ring: #7FA93A;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-muted-foreground);
+    font-family: var(--font-sans);
+    font-weight: 500; /* Manrope Medium (500) for Body Text */
+  }
+
+  /* Ensure transparent background on all text, headings, paragraphs, and font elements */
+  p,
+  span,
+  a,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .serif,
+  .font-serif,
+  .font-script,
+  .hero-heading,
+  .section-heading,
+  .product-name,
+  .product-title,
+  .product-price {
+    background-color: transparent;
+    background-image: none;
+    box-shadow: none;
+  }
+
+  /* Secondary Font: Manrope Medium (500) for Body text, descriptions, forms, footer, small labels */
+  p,
+  li,
+  label,
+  input,
+  textarea,
+  select,
+  small,
+  figcaption {
+    color: var(--color-muted-foreground);
+    font-family: var(--font-sans);
+    font-weight: 500;
+  }
+
+  /* Navigation: Manrope SemiBold (600) */
+  nav a,
+  .nav-link,
+  .nav-item {
+    font-family: var(--font-sans);
+    font-weight: 600;
+  }
+
+  /* Primary Display Font: JHC Rasbora ExtraBold for Hero heading, Section headings, Collection titles, Category titles, Promotional headlines, CTA headings, Footer CTA headings */
+  h1:not(.product-name),
+  h2:not(.product-name),
+  h3:not(.product-name),
+  h4:not(.product-name),
+  h5:not(.product-name),
+  h6:not(.product-name),
+  .hero-heading,
+  .section-heading,
+  .section-title,
+  .collection-title,
+  .category-title,
+  .promo-headline,
+  .cta-heading,
+  .banner-title,
+  .marketing-title,
+  .font-script,
+  .serif,
+  .font-serif {
+    font-family: var(--font-heading) !important;
+    font-weight: 800;
+  }
+
+  /* Product names: Manrope Bold (700) */
+  .product-name,
+  .product-title {
+    font-family: var(--font-sans);
+    font-weight: 700;
+  }
+
+  /* Product prices: Manrope SemiBold (600) */
+  .product-price {
+    font-family: var(--font-sans);
+    font-weight: 600;
+  }
+
+  /* Buttons: Manrope Bold (700) */
+  button,
+  .btn,
+  a.inline-block,
+  [role="button"] {
+    font-family: var(--font-sans);
+    font-weight: 700;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 35s linear infinite;
+}
+
+/* Hide scrollbars but keep functionality */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
