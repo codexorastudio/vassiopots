@@ -68,7 +68,7 @@ const DEFAULT_REVIEWS: Review[] = [
   },
   {
     id: "rev-105",
-    productId: "FFT2399",
+    productId: "ROCK",
     orderId: "VAS-8760",
     customerId: "cust-5",
     customerName: "Karan Johar",

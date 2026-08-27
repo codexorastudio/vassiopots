@@ -12,7 +12,7 @@ export type DbProductVariant = Database['public']['Tables']['product_variants'][
 export const isSupabaseConfigured = true; // Set to true so services use our local storage client instead of falling back to default mock data!
 
 // Database Version Migration to automatically seed PDF stock levels
-const DB_VERSION = "v1.3_pdf_catalogue_full_seed";
+const DB_VERSION = "v1.4_only_36_pdf_series";
 if (typeof window !== 'undefined') {
   try {
     const currentVer = localStorage.getItem("vassio_db_version");
@@ -245,7 +245,7 @@ function getSeedData(tableName: string) {
       { product_id: "LFS69", featured: false, new_arrival: true, active: true, display_order: 3, id: "dyn-lfs69" },
       { product_id: "VNL83", featured: true, new_arrival: true, active: true, display_order: 4, id: "dyn-vnl83" },
       { product_id: "ARC84", featured: true, new_arrival: false, active: true, display_order: 5, id: "dyn-arc84" },
-      { product_id: "FFT2399", featured: false, new_arrival: false, active: true, display_order: 6, id: "dyn-fft2399" }
+      { product_id: "ROCK", featured: true, new_arrival: true, active: true, display_order: 6, id: "dyn-rock" }
     ];
   }
   if (tableName === 'product_variants') {
