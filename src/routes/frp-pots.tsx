@@ -79,7 +79,7 @@ function FrpPotsPage() {
             <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 mr-2">
               <SlidersHorizontal className="h-3.5 w-3.5" /> Filter:
             </span>
-            {["all", "sea green", "grey", "black", "sage"].map((c) => (
+            {["all", "black", "white", "grey", "green", "beige", "brown", "yellow", "red"].map((c) => (
               <button
                 key={c}
                 onClick={() => setSelectedColor(c)}

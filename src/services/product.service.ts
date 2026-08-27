@@ -295,95 +295,43 @@ const productService = {
    */
   filterByCategory(products: Product[], category: string): Product[] {
     const cat = category.toLowerCase();
-    if (cat === "frp-pots" || cat === "frp" || cat === "pots") {
-      return products.filter((p) => {
-        const mat = (p.material ?? "").toLowerCase();
-        const n = p.name.toLowerCase();
-        const code = p.code.toUpperCase();
-        const isPlant =
-          !n.includes("planter") &&
-          !n.includes("pot") &&
-          (n.includes("artificial plant") || n.includes("tree") || n.includes("faux") || code.startsWith("FFT"));
-        if (isPlant) return false;
-        if (cat === "pots") return true;
-        return (
-          mat.includes("fiber") ||
-          mat.includes("frp") ||
-          p.category === "frp-pots" ||
-          !mat.includes("ceramic") ||
-          code === "ROCK" ||
-          code === "DIAMOND" ||
-          code === "BSHARK" ||
-          code === "FLORA" ||
-          code === "POOL" ||
-          code === "CONE" ||
-          code === "KING" ||
-          code === "COOL" ||
-          code === "EPOT" ||
-          code === "BALL" ||
-          code === "POTA" ||
-          code === "POPPY" ||
-          code === "TULIP" ||
-          code === "LILLY" ||
-          code === "SUNFLOWER" ||
-          code === "PANSY" ||
-          code === "HOLLY" ||
-          code === "ROSE" ||
-          code === "GLORY" ||
-          code === "STAR" ||
-          code === "FLAX" ||
-          code === "DAISY" ||
-          code === "ORCHID" ||
-          code === "JUPITER" ||
-          code === "ORANGE" ||
-          code === "LEAF3" ||
-          code === "LEAF2" ||
-          code === "IRIS" ||
-          code === "PATATO" ||
-          code === "BOAT" ||
-          code === "JUNIPER" ||
-          code === "VANILLA" ||
-          code === "JACK" ||
-          code === "DRUM" ||
-          code === "ARECA" ||
-          code === "PANDA" ||
-          code === "FLX48" ||
-          code === "LFS70" ||
-          code === "LFS69" ||
-          code === "VNL83" ||
-          code === "ARC84"
-        );
-      });
-    }
-    if (cat === "artificial-plants") {
-      return products.filter((p) => {
-        const n = p.name.toLowerCase();
-        return (
-          !n.includes("planter") &&
-          !n.includes("pot") &&
-          (n.includes("artificial plant") || n.includes("tree") || n.includes("faux") ||
-           n.includes("palm") || n.includes("ficus") || p.code.startsWith("FFT"))
-        );
-      });
+    if (cat === "frp-pots" || cat === "frp" || cat === "pots" || cat === "all") {
+      return products;
     }
     if (cat === "terracotta-pots" || cat === "terracotta") {
       return products.filter((p) => {
-        const mat = (p.material ?? "").toLowerCase();
+        const col = (p.color || "").toLowerCase();
+        const name = p.name.toLowerCase();
+        const desc = (p.description || "").toLowerCase();
         return (
-          (mat.includes("ceramic") && !mat.includes("fiber")) ||
-          mat.includes("clay") ||
-          p.code.startsWith("ABV") ||
-          p.code.startsWith("DSV")
+          col.includes("red") ||
+          col.includes("orange") ||
+          col.includes("terracotta") ||
+          col.includes("beige") ||
+          col.includes("brown") ||
+          name.includes("terracotta") ||
+          name.includes("rose") ||
+          desc.includes("terracotta")
         );
       });
     }
     if (cat === "pebbles") {
-      return products.filter(
-        (p) =>
-          p.name.toLowerCase().includes("pebble") ||
-          p.name.toLowerCase().includes("stone") ||
-          (p.material ?? "").toLowerCase().includes("marble")
-      );
+      return products.filter((p) => {
+        const col = (p.color || "").toLowerCase();
+        const name = p.name.toLowerCase();
+        const mat = (p.material || "").toLowerCase();
+        const desc = (p.description || "").toLowerCase();
+        return (
+          col.includes("grey") ||
+          col.includes("stone") ||
+          col.includes("speckled") ||
+          col.includes("granite") ||
+          name.includes("rock") ||
+          name.includes("stone") ||
+          desc.includes("granite") ||
+          desc.includes("speckled")
+        );
+      });
     }
     return products;
   },
