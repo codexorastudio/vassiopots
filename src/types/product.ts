@@ -21,12 +21,15 @@ export interface ProductVariant {
   display_order: number;        // Sort order within product
 }
 
-// ── Static Size Definition (no prices) ───────────────────────────────────────
-
 export interface ProductSizeOption {
   name: string;        // Display name matching variant_name
+  label?: string;
   dimensions: string;  // Physical dimensions string
   available?: boolean; // UI hint only, authoritative value is in variant
+  colors?: string[];
+  stock?: number;
+  price?: number;
+  mrp?: number;
 }
 
 // ── Full Merged Product ───────────────────────────────────────────────────────

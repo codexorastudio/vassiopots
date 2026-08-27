@@ -1,20 +1,39 @@
-/**
- * Variant Store
- * ─────────────────────────────────────────────────────────────────────────────
- * Manages admin-edited product variant availability.
- * Uses localStorage as the persistence layer now.
- * Future: replace read/write calls with Supabase queries — zero UI changes needed.
- */
-
-import {
-  type ProductVariants,
-  type ProductSizeVariant,
-  type ProductColorVariant,
-  DEFAULT_SIZE_OPTIONS,
-  DEFAULT_COLOR_OPTIONS,
-} from "@/types/variants";
+import { getProductByCode } from "@/data/products";
+import type { ProductVariants, ProductSizeVariant, ProductColorVariant } from "@/types/variants";
 
 const STORAGE_KEY = "vassio_variants_v1";
+
+const COLOR_HEX_MAP: Record<string, string> = {
+  "BLACK": "#1F1F1F",
+  "WHITE": "#FFFFFF",
+  "GREY": "#8B8B8B",
+  "BROWN": "#7A4B3A",
+  "BEIGE": "#D9C6A5",
+  "GREEN": "#4A6B3D",
+  "RED": "#B84A39",
+  "YELLOW": "#E0C068",
+  "BLACK & GREY": "#3D3D3D",
+  "GREEN & GREY": "#4A5D4E",
+  "ORANGE": "#D96B27",
+  "PLAIN": "#5C6B5E",
+  "SHINING": "#3B82F6",
+};
+
+export function mapColorNamesToVariants(colorNames: string[]): ProductColorVariant[] {
+  return colorNames.map((name, idx) => {
+    const cleanName = name.trim();
+    const upper = cleanName.toUpperCase();
+    const hex = COLOR_HEX_MAP[upper] || "#739D30";
+    const slug = cleanName.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    return {
+      id: slug || `color-${idx}`,
+      name: cleanName,
+      hex,
+      available: true,
+      displayOrder: idx,
+    };
+  });
+}
 
 // ─── Local persistence helpers ─────────────────────────────────────────────────
 
@@ -37,35 +56,18 @@ function writeAllVariants(map: Record<string, ProductVariants>): void {
 
 // ─── Public API ────────────────────────────────────────────────────────────────
 
-/**
- * Returns the full variant config for a product.
- * If no admin overrides exist yet, returns the default template.
- *
- * Future Supabase replacement:
- *   const { data } = await supabase.from("product_variants").select("*").eq("product_code", code).single();
- *   return data ?? buildDefault(code);
- */
 export function getVariants(productCode: string): ProductVariants {
   const all = readAllVariants();
   if (all[productCode]) return all[productCode];
   return buildDefault(productCode);
 }
 
-/**
- * Persists updated variants for a product.
- *
- * Future Supabase replacement:
- *   await supabase.from("product_variants").upsert({ product_code: productCode, ...variants });
- */
 export function saveVariants(productCode: string, variants: ProductVariants): void {
   const all = readAllVariants();
   all[productCode] = { ...variants, updatedAt: new Date().toISOString() };
   writeAllVariants(all);
 }
 
-/**
- * Updates a single size availability for a product.
- */
 export function toggleSizeAvailability(productCode: string, sizeId: string, available: boolean): void {
   const variants = getVariants(productCode);
   variants.sizes = variants.sizes.map((s) =>
@@ -74,9 +76,6 @@ export function toggleSizeAvailability(productCode: string, sizeId: string, avai
   saveVariants(productCode, variants);
 }
 
-/**
- * Updates a single color availability for a product.
- */
 export function toggleColorAvailability(productCode: string, colorId: string, available: boolean): void {
   const variants = getVariants(productCode);
   variants.colors = variants.colors.map((c) =>
@@ -85,9 +84,6 @@ export function toggleColorAvailability(productCode: string, colorId: string, av
   saveVariants(productCode, variants);
 }
 
-/**
- * Adds a new size variant to a product.
- */
 export function addSizeVariant(productCode: string, size: Omit<ProductSizeVariant, "displayOrder">): void {
   const variants = getVariants(productCode);
   const maxOrder = variants.sizes.reduce((m, s) => Math.max(m, s.displayOrder), -1);
@@ -95,9 +91,6 @@ export function addSizeVariant(productCode: string, size: Omit<ProductSizeVarian
   saveVariants(productCode, variants);
 }
 
-/**
- * Adds a new color variant to a product.
- */
 export function addColorVariant(productCode: string, color: Omit<ProductColorVariant, "displayOrder">): void {
   const variants = getVariants(productCode);
   const maxOrder = variants.colors.reduce((m, c) => Math.max(m, c.displayOrder), -1);
@@ -105,18 +98,12 @@ export function addColorVariant(productCode: string, color: Omit<ProductColorVar
   saveVariants(productCode, variants);
 }
 
-/**
- * Removes a size variant by id.
- */
 export function removeSizeVariant(productCode: string, sizeId: string): void {
   const variants = getVariants(productCode);
   variants.sizes = variants.sizes.filter((s) => s.id !== sizeId);
   saveVariants(productCode, variants);
 }
 
-/**
- * Removes a color variant by id.
- */
 export function removeColorVariant(productCode: string, colorId: string): void {
   const variants = getVariants(productCode);
   variants.colors = variants.colors.filter((c) => c.id !== colorId);
@@ -126,9 +113,42 @@ export function removeColorVariant(productCode: string, colorId: string): void {
 // ─── Internal helpers ──────────────────────────────────────────────────────────
 
 function buildDefault(productCode: string): ProductVariants {
+  const prod = getProductByCode(productCode) as any;
+  if (prod && prod.sizes && Array.isArray(prod.sizes) && prod.sizes.length > 0) {
+    const sizes: ProductSizeVariant[] = prod.sizes.map((s: any, idx: number) => {
+      let label = s.label || s.name || `Size ${idx + 1}`;
+      if (label.includes("-")) {
+        const parts = label.split("-");
+        label = parts[parts.length - 1].trim();
+      }
+      if (label.toUpperCase().startsWith("SIZE ")) {
+        label = label.substring(5).trim();
+      }
+      const available = (s.stock ?? 1) > 0;
+      return {
+        id: s.name || label,
+        label,
+        dimensions: s.dimensions || "",
+        available,
+        displayOrder: idx,
+      };
+    });
+
+    const firstSize = prod.sizes[0];
+    const firstColors = firstSize?.colors || (prod.color ? prod.color.split("/").map((c: string) => c.trim()) : ["Black"]);
+    const colors: ProductColorVariant[] = mapColorNamesToVariants(firstColors);
+
+    return {
+      productCode,
+      sizes,
+      colors,
+    };
+  }
+
+  const colorsList = prod?.color ? prod.color.split("/").map((c: string) => c.trim()) : ["Black"];
   return {
     productCode,
-    sizes: DEFAULT_SIZE_OPTIONS.map((s) => ({ ...s })),
-    colors: DEFAULT_COLOR_OPTIONS.map((c) => ({ ...c })),
+    sizes: [{ id: "Standard", label: "Standard", available: true, displayOrder: 0, dimensions: prod?.dimensions || "" }],
+    colors: mapColorNamesToVariants(colorsList),
   };
 }

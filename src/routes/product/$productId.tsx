@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { Truck, RotateCcw, Phone, ShieldCheck, Heart, Check, Star, ArrowLeft, ShoppingBag } from "lucide-react";
 import { useStore } from "@/context/StoreContext";
 import { toast } from "sonner";
-import { getVariants } from "@/services/variantStore";
+import { getVariants, mapColorNamesToVariants } from "@/services/variantStore";
 import type { ProductSizeVariant, ProductColorVariant } from "@/types/variants";
 import ProductReviews from "@/components/ProductReviews";
 import { reviewStore } from "@/services/reviewStore";
@@ -170,22 +170,48 @@ function ProductDetails({ product }: { product: Product }) {
   // ── Variant State (color / size UI from variantStore — not prices) ──────────
   const uiVariants = getVariants(product.code);
   const sortedSizes = [...(uiVariants?.sizes || [])].sort((a, b) => a.displayOrder - b.displayOrder);
-  const sortedColors = [...(uiVariants?.colors || [])].sort((a, b) => a.displayOrder - b.displayOrder);
 
   const [selectedVariantSize, setSelectedVariantSize] = useState<ProductSizeVariant | null>(
     sortedSizes.find((s) => s.available) ?? null
   );
+
+  // Derive dynamic colors for the selected size
+  const activeSizeColors: ProductColorVariant[] = (() => {
+    if (selectedVariantSize && product.sizes) {
+      const target = selectedVariantSize.label.toUpperCase();
+      const matchedSizeObj = product.sizes.find((s: any) => {
+        const sName = (s.name || "").toUpperCase();
+        const sLabel = (s.label || "").toUpperCase();
+        return sName.endsWith(`-${target}`) || sName === target || sLabel === target || sName.includes(`-${target} `);
+      });
+      if (matchedSizeObj && matchedSizeObj.colors && Array.isArray(matchedSizeObj.colors) && matchedSizeObj.colors.length > 0) {
+        return mapColorNamesToVariants(matchedSizeObj.colors);
+      }
+    }
+    return uiVariants?.colors || [];
+  })();
+
+  const sortedColors = activeSizeColors;
+
   const [selectedVariantColor, setSelectedVariantColor] = useState<ProductColorVariant | null>(
     sortedColors.find((c) => c.available) ?? null
   );
 
-  // Reset selections when product changes
+  // Reset/update selected color when product or selected size changes
+  useEffect(() => {
+    if (sortedColors && sortedColors.length > 0) {
+      setSelectedVariantColor((prev) => {
+        if (prev && sortedColors.some((c) => c.id === prev.id)) return prev;
+        return sortedColors.find((c) => c.available) ?? sortedColors[0];
+      });
+    }
+  }, [selectedVariantSize?.id, product.code]);
+
+  // Reset selected size when product code changes
   useEffect(() => {
     const fresh = getVariants(product.code);
     const freshSizes = [...(fresh?.sizes || [])].sort((a, b) => a.displayOrder - b.displayOrder);
-    const freshColors = [...(fresh?.colors || [])].sort((a, b) => a.displayOrder - b.displayOrder);
     setSelectedVariantSize(freshSizes.find((s) => s.available) ?? null);
-    setSelectedVariantColor(freshColors.find((c) => c.available) ?? null);
   }, [product.code]);
 
   // ── Supabase / Fallback Variant Pricing ─────────────────────────────────────
@@ -197,12 +223,11 @@ function ProductDetails({ product }: { product: Product }) {
         const sLabel = selectedVariantSize.label.toUpperCase();
         return (
           vName === sLabel ||
+          vName.endsWith(`-${sLabel}`) ||
           vName.startsWith(`${sLabel} `) ||
           vName.startsWith(`${sLabel}(`) ||
           vName.includes(`(${sLabel})`) ||
-          vName.includes(`-${sLabel}`) ||
           vName.startsWith(`SIZE ${sLabel}`) ||
-          vName.startsWith(`FLAX-${sLabel}`) ||
           vName.startsWith(`${sLabel} (`)
         );
       })
