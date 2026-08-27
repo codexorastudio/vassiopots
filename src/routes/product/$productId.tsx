@@ -33,13 +33,15 @@ export const Route = createFileRoute("/product/$productId")({
 export function findMatchingImage(
   thumbnails: string[] | undefined,
   sizeLabel?: string | null,
-  colorName?: string | null
+  colorName?: string | null,
+  sizeIndex: number = 0
 ): string | null {
   if (!thumbnails || thumbnails.length === 0) return null;
 
   const sLabel = sizeLabel ? sizeLabel.trim().toLowerCase() : "";
   const cName = colorName ? colorName.trim().toLowerCase() : "";
   const cClean = cName.replace(/[^a-z0-9]/g, "");
+  const numIndex = sizeIndex + 1;
 
   let bestImage: string | null = null;
   let bestScore = -1;
@@ -58,7 +60,7 @@ export function findMatchingImage(
 
     if (sLabel) {
       const sClean = sLabel.replace(/[^a-z0-9]/g, "");
-      const isSizeMatch =
+      const isLetterMatch =
         filename.includes(`_${sClean}.`) ||
         filename.includes(`_${sClean}_`) ||
         filename.includes(`-${sClean}.`) ||
@@ -71,8 +73,16 @@ export function findMatchingImage(
         filename.includes(`size_${sClean}_`) ||
         filename.includes(`size${sClean}_`);
 
-      if (isSizeMatch) {
+      const isNumberMatch =
+        filename.includes(`_0${numIndex}.`) ||
+        filename.includes(`_0${numIndex}_`) ||
+        filename.includes(`generated_0${numIndex}`) ||
+        filename.includes(`pair_${numIndex}`);
+
+      if (isLetterMatch) {
         score += 10;
+      } else if (isNumberMatch) {
+        score += 8;
       }
     }
 
@@ -151,11 +161,11 @@ function ProductPage() {
     );
   }
 
-  const handleVariantChange = (sizeLabel: string | null, colorName: string | null) => {
+  const handleVariantChange = (sizeLabel: string | null, colorName: string | null, sizeIndex: number = 0) => {
     const thumbnails = (product.thumbnails && product.thumbnails.length > 0)
       ? product.thumbnails
       : [product.img];
-    const matched = findMatchingImage(thumbnails, sizeLabel, colorName);
+    const matched = findMatchingImage(thumbnails, sizeLabel, colorName, sizeIndex);
     if (matched) {
       setActiveImageOverride(matched);
     }
@@ -261,7 +271,7 @@ function ProductDetails({
   onVariantChange,
 }: {
   product: Product;
-  onVariantChange?: (sizeLabel: string | null, colorName: string | null) => void;
+  onVariantChange?: (sizeLabel: string | null, colorName: string | null, sizeIndex: number) => void;
 }) {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useStore();
@@ -306,13 +316,16 @@ function ProductDetails({
     }
   }, [selectedVariantSize?.id, product.code]);
 
+  const currentSizeIndex = sortedSizes.findIndex((s) => s.id === selectedVariantSize?.id);
+
   // Notify parent component on variant change to update displayed main image
   useEffect(() => {
     onVariantChange?.(
       selectedVariantSize?.label ?? null,
-      selectedVariantColor?.name ?? null
+      selectedVariantColor?.name ?? null,
+      currentSizeIndex >= 0 ? currentSizeIndex : 0
     );
-  }, [selectedVariantSize?.id, selectedVariantColor?.id, product.code]);
+  }, [selectedVariantSize?.id, selectedVariantColor?.id, product.code, currentSizeIndex]);
 
   // Reset selected size when product code changes
   useEffect(() => {
