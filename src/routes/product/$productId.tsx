@@ -30,9 +30,82 @@ export const Route = createFileRoute("/product/$productId")({
   component: ProductPage,
 });
 
+export function findMatchingImage(
+  thumbnails: string[] | undefined,
+  sizeLabel?: string | null,
+  colorName?: string | null
+): string | null {
+  if (!thumbnails || thumbnails.length === 0) return null;
+
+  const sLabel = sizeLabel ? sizeLabel.trim().toLowerCase() : "";
+  const cName = colorName ? colorName.trim().toLowerCase() : "";
+  const cClean = cName.replace(/[^a-z0-9]/g, "");
+
+  let bestImage: string | null = null;
+  let bestScore = -1;
+
+  for (const imgUrl of thumbnails) {
+    const filename = (imgUrl.split("/").pop() || "").toLowerCase();
+    if (
+      filename.includes("size_reference") ||
+      filename.includes("reference_image") ||
+      filename.includes("sizereference")
+    ) {
+      continue;
+    }
+
+    let score = 0;
+
+    if (sLabel) {
+      const sClean = sLabel.replace(/[^a-z0-9]/g, "");
+      const isSizeMatch =
+        filename.includes(`_${sClean}.`) ||
+        filename.includes(`_${sClean}_`) ||
+        filename.includes(`-${sClean}.`) ||
+        filename.includes(`-${sClean}-`) ||
+        filename.includes(`-${sClean}_`) ||
+        filename.includes(`_${sClean}-`) ||
+        filename.includes(`size${sClean}`) ||
+        filename.includes(`size_${sClean}`) ||
+        filename.includes(`size-${sClean}`) ||
+        filename.includes(`size_${sClean}_`) ||
+        filename.includes(`size${sClean}_`);
+
+      if (isSizeMatch) {
+        score += 10;
+      }
+    }
+
+    if (cName) {
+      const filenameClean = filename.replace(/[^a-z0-9]/g, "");
+      if (cClean && filenameClean.includes(cClean)) {
+        score += 5;
+      } else if (cName.includes("&")) {
+        const parts = cName.split("&").map((p) => p.trim().replace(/[^a-z0-9]/g, ""));
+        if (parts.length > 0 && parts.every((p) => filenameClean.includes(p))) {
+          score += 5;
+        }
+      } else {
+        const first4 = cClean.substring(0, 4);
+        if (first4.length >= 3 && filenameClean.includes(first4)) {
+          score += 3;
+        }
+      }
+    }
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestImage = imgUrl;
+    }
+  }
+
+  return bestScore > 0 ? bestImage : null;
+}
+
 function ProductPage() {
   const { productId } = useParams({ from: "/product/$productId" });
   const { product, loading } = useProduct(productId);
+  const [activeImageOverride, setActiveImageOverride] = useState<string | null>(null);
 
   if (loading) {
     return (
@@ -78,6 +151,16 @@ function ProductPage() {
     );
   }
 
+  const handleVariantChange = (sizeLabel: string | null, colorName: string | null) => {
+    const thumbnails = (product.thumbnails && product.thumbnails.length > 0)
+      ? product.thumbnails
+      : [product.img];
+    const matched = findMatchingImage(thumbnails, sizeLabel, colorName);
+    if (matched) {
+      setActiveImageOverride(matched);
+    }
+  };
+
   return (
     <Layout>
       <div key={product.code} className="mx-auto max-w-[1400px] px-6 py-12 md:py-16">
@@ -91,8 +174,8 @@ function ProductPage() {
         </nav>
 
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-14 bg-background">
-          <ProductImages product={product} />
-          <ProductDetails product={product} />
+          <ProductImages product={product} activeImageOverride={activeImageOverride} />
+          <ProductDetails product={product} onVariantChange={handleVariantChange} />
         </div>
 
         <ProductReviews productId={product.code} productName={product.name} />
@@ -103,7 +186,13 @@ function ProductPage() {
 
 // ─── Product Images Panel ──────────────────────────────────────────────────────
 
-function ProductImages({ product }: { product: Product }) {
+function ProductImages({
+  product,
+  activeImageOverride,
+}: {
+  product: Product;
+  activeImageOverride?: string | null;
+}) {
   const { toggleWishlist, isInWishlist } = useStore();
   const wishlisted = isInWishlist(product.code);
 
@@ -114,8 +203,12 @@ function ProductImages({ product }: { product: Product }) {
   const [activeImage, setActiveImage] = useState<string>(product.img);
 
   useEffect(() => {
-    setActiveImage(product.img);
-  }, [product.code, product.img]);
+    if (activeImageOverride) {
+      setActiveImage(activeImageOverride);
+    } else {
+      setActiveImage(product.img);
+    }
+  }, [product.code, product.img, activeImageOverride]);
 
   return (
     <div className="w-full lg:w-1/2 flex flex-col-reverse md:flex-row gap-4 bg-white/40 p-4 md:p-6 border border-border/30 rounded-[24px]">
@@ -163,7 +256,13 @@ function ProductImages({ product }: { product: Product }) {
 
 // ─── Product Details Panel ─────────────────────────────────────────────────────
 
-function ProductDetails({ product }: { product: Product }) {
+function ProductDetails({
+  product,
+  onVariantChange,
+}: {
+  product: Product;
+  onVariantChange?: (sizeLabel: string | null, colorName: string | null) => void;
+}) {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useStore();
 
@@ -206,6 +305,14 @@ function ProductDetails({ product }: { product: Product }) {
       });
     }
   }, [selectedVariantSize?.id, product.code]);
+
+  // Notify parent component on variant change to update displayed main image
+  useEffect(() => {
+    onVariantChange?.(
+      selectedVariantSize?.label ?? null,
+      selectedVariantColor?.name ?? null
+    );
+  }, [selectedVariantSize?.id, selectedVariantColor?.id, product.code]);
 
   // Reset selected size when product code changes
   useEffect(() => {
