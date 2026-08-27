@@ -12,7 +12,7 @@ export type DbProductVariant = Database['public']['Tables']['product_variants'][
 export const isSupabaseConfigured = true; // Set to true so services use our local storage client instead of falling back to default mock data!
 
 // Database Version Migration to automatically seed PDF stock levels
-const DB_VERSION = "v1.4_only_36_pdf_series";
+const DB_VERSION = "v1.5_clean_1to1_product_images";
 if (typeof window !== 'undefined') {
   try {
     const currentVer = localStorage.getItem("vassio_db_version");
