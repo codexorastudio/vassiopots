@@ -349,12 +349,12 @@ export const products = [
   // 11. POTA SERIES
   {
     name: 'Pota Series Grooved Basin Planters',
-    img: '/products/POTA/POTA-A_BLACK-1.webp',
+    img: '/products/pota/pota_a.webp',
     thumbnails: [
-      '/products/POTA/POTA-A_BLACK-1.webp',
-      '/products/POTA/POTA-B_BLACK-1.webp',
-      '/products/POTA/POTA-C_BLACK-1.webp',
-      '/products/POTA/POTA_size_reference.webp'
+      '/products/pota/pota_a.webp',
+      '/products/pota/pota_b.webp',
+      '/products/pota/pota_c.webp',
+      '/products/pota/pota_size_reference.webp'
     ],
     code: 'POTA',
     color: 'Black',
@@ -373,11 +373,11 @@ export const products = [
   // 12. POPPY SERIES
   {
     name: 'Poppy Series Fluted Pillar Planters',
-    img: '/products/POPPY/POPPY-A_GREY-1.webp',
+    img: '/products/poppy/poppy_a.webp',
     thumbnails: [
-      '/products/POPPY/POPPY-A_GREY-1.webp',
-      '/products/POPPY/POPPY-B_GREY-1.webp',
-      '/products/POPPY/POPPY_size_reference.webp'
+      '/products/poppy/poppy_a.webp',
+      '/products/poppy/poppy_b.webp',
+      '/products/poppy/poppy_size_reference_image.webp'
     ],
     code: 'POPPY',
     color: 'Grey',
@@ -395,11 +395,11 @@ export const products = [
   // 13. TULIP SERIES
   {
     name: 'Tulip Series Flared Floor Vases',
-    img: '/products/TULIP/TULIP-A_BEIGE-1.webp',
+    img: '/products/tulip/tulip_a.webp',
     thumbnails: [
-      '/products/TULIP/TULIP-A_BEIGE-1.webp',
-      '/products/TULIP/TULIP-E_BEIGE-1.webp',
-      '/products/TULIP/TULIP_SIZE_REFERENCE.webp'
+      '/products/tulip/tulip_a.webp',
+      '/products/tulip/tulip_e.webp',
+      '/products/tulip/tulip_size_reference_image.webp'
     ],
     code: 'TULIP',
     color: 'Beige',
@@ -417,11 +417,11 @@ export const products = [
   // 14. LILLY SERIES
   {
     name: 'Lilly Series Curved Urn Planters',
-    img: '/products/LILLY/LILLY-A_GREEN-1.webp',
+    img: '/products/LILLY/lily_a_green.webp',
     thumbnails: [
-      '/products/LILLY/LILLY-A_GREEN-1.webp',
-      '/products/LILLY/LILLY-B_GREY-1.webp',
-      '/products/LILLY/LILLY_size_reference.webp'
+      '/products/LILLY/lily_a_green.webp',
+      '/products/LILLY/lily_b_whit.webp',
+      '/products/LILLY/lily_size_reference.webp'
     ],
     code: 'LILLY',
     color: 'Green / Grey',
@@ -439,12 +439,12 @@ export const products = [
   // 15. SUNFLOWER SERIES
   {
     name: 'Sunflower Series Tapered Cylinders',
-    img: '/products/SUNFLOWER/SUN-B_BEIGE-1.webp',
+    img: '/products/SUNFLOWER/sun_b_yellow.webp',
     thumbnails: [
-      '/products/SUNFLOWER/SUN-B_BEIGE-1.webp',
-      '/products/SUNFLOWER/SUN-C_BROWN-1.webp',
-      '/products/SUNFLOWER/SUN-D_BROWN-1.webp',
-      '/products/SUNFLOWER/SUNFLOWER_size_reference.webp'
+      '/products/SUNFLOWER/sun_b_yellow.webp',
+      '/products/SUNFLOWER/sun_c_brown.webp',
+      '/products/SUNFLOWER/sun_d_brown.webp',
+      '/products/SUNFLOWER/sun_size_reference.webp'
     ],
     code: 'SUNFLOWER',
     color: 'Beige / Brown',
@@ -463,12 +463,12 @@ export const products = [
   // 16. PANSY SERIES
   {
     name: 'Pansy Series Tapered Column Planters',
-    img: '/products/PANSY/PANSY-A_BLACK-2.webp',
+    img: '/products/PANSY/PANSY_A.webp',
     thumbnails: [
-      '/products/PANSY/PANSY-A_BLACK-2.webp',
-      '/products/PANSY/PANSY-B_BLACK-2.webp',
-      '/products/PANSY/PANSY-C_BLACK-3.webp',
-      '/products/PANSY/PANSY_size_reference.webp'
+      '/products/PANSY/PANSY_A.webp',
+      '/products/PANSY/PANSY_B.webp',
+      '/products/PANSY/PANSY_C.webp',
+      '/products/PANSY/PANSY_SIZE_REFERENCE.webp'
     ],
     code: 'PANSY',
     color: 'Black',
@@ -487,10 +487,10 @@ export const products = [
   // 17. HOLLYHOCK SERIES
   {
     name: 'Hollyhock Wide Drum Planter',
-    img: '/products/HOLLYHOCK/HOLLY-B_BEIGE-1.webp',
+    img: "/products/HOLLY/holly_b.webp",
     thumbnails: [
-      '/products/HOLLYHOCK/HOLLY-B_BEIGE-1.webp',
-      '/products/HOLLYHOCK/HOLLYHOCK_size_reference.webp'
+      "/products/HOLLY/holly_b.webp",
+      "/products/HOLLY/holly_size_reference.webp"
     ],
     code: 'HOLLY',
     color: 'Beige',
@@ -507,11 +507,11 @@ export const products = [
   // 18. ROSE SERIES
   {
     name: 'Rose Series Terracotta Red Bowls',
-    img: '/products/ROSE/ROSE-B_RED-1.webp',
+    img: '/products/ROSE/rose_b.webp',
     thumbnails: [
-      '/products/ROSE/ROSE-B_RED-1.webp',
-      '/products/ROSE/ROSE-C_RED-1.webp',
-      '/products/ROSE/ROSE_size_reference.webp'
+      '/products/ROSE/rose_b.webp',
+      '/products/ROSE/rose_c.webp',
+      '/products/ROSE/rose_size_reference.webp'
     ],
     code: 'ROSE',
     color: 'Red',
@@ -529,13 +529,13 @@ export const products = [
   // 19. GLORY SERIES
   {
     name: 'Glory Series Tapered Stone Pots',
-    img: '/products/GLORY/GLORY-B_GREY-1.webp',
+    img: '/products/GLORY/glory_b.webp',
     thumbnails: [
-      '/products/GLORY/GLORY-B_GREY-1.webp',
-      '/products/GLORY/GLORY-C_GREY-2.webp',
-      '/products/GLORY/GLORY-D_GREY-2.webp',
-      '/products/GLORY/GLORY-E_GREY-1.webp',
-      '/products/GLORY/GLORY_size_reference.webp'
+      '/products/GLORY/glory_b.webp',
+      '/products/GLORY/glory_c.webp',
+      '/products/GLORY/glory_d.webp',
+      '/products/GLORY/glory_e.webp',
+      '/products/GLORY/GLORY_SIZE_REFERENCE.webp'
     ],
     code: 'GLORY',
     color: 'Grey',
@@ -555,10 +555,10 @@ export const products = [
   // 20. STAR SERIES
   {
     name: 'Star Series Wide Angle Planter',
-    img: '/products/STAR/STAR-A_GREEN-1.webp',
+    img: '/products/STAR/STAR-A.webp',
     thumbnails: [
-      '/products/STAR/STAR-A_GREEN-1.webp',
-      '/products/STAR/STAR_size_reference.webp'
+      '/products/STAR/STAR-A.webp',
+      '/products/STAR/STAR_SIZE_REFERENCE.webp'
     ],
     code: 'STAR',
     color: 'Green',
@@ -595,12 +595,12 @@ export const products = [
   // 22. DAISY SERIES
   {
     name: 'Daisy Series Column Pillars',
-    img: '/products/DAISY/DAISY-A_YELLOW-2.webp',
+    img: '/products/daisy/daisy_a.webp',
     thumbnails: [
-      '/products/DAISY/DAISY-A_YELLOW-2.webp',
-      '/products/DAISY/DAISY-B_YELLOW-1.webp',
-      '/products/DAISY/DAISY-C_YELLOW-3.webp',
-      '/products/DAISY/DAISY_size_reference.webp'
+      '/products/daisy/daisy_a.webp',
+      '/products/daisy/daisy_b.webp',
+      '/products/daisy/daisy_c.webp',
+      '/products/daisy/daisy_size_reference.webp'
     ],
     code: 'DAISY',
     color: 'Yellow',
@@ -619,13 +619,13 @@ export const products = [
   // 23. ORCHID SERIES
   {
     name: 'Orchid Series Fluted Round Planters',
-    img: '/products/ORCHID/ORCHID-A_WHITE-3.webp',
+    img: '/products/orchid/orchid_a_beige.webp',
     thumbnails: [
-      '/products/ORCHID/ORCHID-A_WHITE-3.webp',
-      '/products/ORCHID/ORCHID-B_WHITE-2.webp',
-      '/products/ORCHID/ORCHID-C_WHITE-3.webp',
-      '/products/ORCHID/ORCHID-D_WHITE-3.webp',
-      '/products/ORCHID/ORCHID_size_reference.webp'
+      '/products/orchid/orchid_a_beige.webp',
+      '/products/orchid/orchid_b_beige.webp',
+      '/products/orchid/orchid_c_beige.webp',
+      '/products/orchid/orchid_d_beige.webp',
+      '/products/orchid/orchid_size_reference.webp'
     ],
     code: 'ORCHID',
     color: 'White / Beige',
@@ -645,13 +645,13 @@ export const products = [
   // 24. JUPITER SERIES
   {
     name: 'Jupiter Series Salt & Pepper Planters',
-    img: '/products/JUPITER/JUPITER-A_BLACK_GREY-4.webp',
+    img: '/products/jupiter/jupiter_a_black.webp',
     thumbnails: [
-      '/products/JUPITER/JUPITER-A_BLACK_GREY-4.webp',
-      '/products/JUPITER/JUPITER-B_BLACK_GREY-3.webp',
-      '/products/JUPITER/JUPITER-C_BLACK_GREY-4.webp',
-      '/products/JUPITER/JUPITER-D_BLACK_GREY-4.webp',
-      '/products/JUPITER/JUPITER_size_reference.webp'
+      '/products/jupiter/jupiter_a_black.webp',
+      '/products/jupiter/jupiter_b_black.webp',
+      '/products/jupiter/jupiter_c_black.webp',
+      '/products/jupiter/jupiter_d_black.webp',
+      '/products/jupiter/jupiter_size_reference.webp'
     ],
     code: 'JUPITER',
     color: 'Black & Grey',
